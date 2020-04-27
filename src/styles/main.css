@@ -2,13 +2,16 @@
 
 :root {
   --primary-colour: #050505;
-  --secondary-colour: #c9daea;
-  --background-colour: black;
+  --secondary-colour: #e9d985;
+  --background-colour: #260c1a;
+  --background-colour: #553739;
+  --board-colour: #748e54;
 }
 
 body {
   padding: 1em 0.5em;
   background: var(--background-colour);
+  font-size: 2em;
 }
 img {
   max-width: 100%;
@@ -16,13 +19,47 @@ img {
 .board {
   position: relative;
   width: 1200px;
-  height: 900px;
-  background: ghostwhite;
+  height: 800px;
+  background: var(--board-colour);
   margin: 0 auto;
   padding: 0.25em;
 }
 .mouse {
   position: absolute;
   width: 75px;
-  left: 60px
+  height: 75px;
+  z-index: 2;
+}
+.mouse-hole {
+  position: absolute;
+}
+.fadein {
+  transition: opacity 2s linear;
+  transform: translate(70);
+  opacity: 1;
+}
+.fadeout {
+  transition: opacity 2s linear;
+  transform: translate(70);
+  opacity: 0;
+}
+.hidden {
+  transition: opacity 2s linear;
+  transform: translate(70);
+  opacity: 0;
+}
+.show {
+  transition: opacity 2s linear;
+  transform: translate(70);
+  opacity: 1;
+}
+.message-div{
+ margin: 2em auto;
+ text-align: center;
+ background: var(--background-colour);
+ color: var(--secondary-colour);
+ width: 400px;
+ padding: 1em .5em;
+/* left: 25%; */
+
 }
