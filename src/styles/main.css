@@ -1,0 +1,28 @@
+@import url("./reset.css");
+
+:root {
+  --primary-colour: #050505;
+  --secondary-colour: #c9daea;
+  --background-colour: black;
+}
+
+body {
+  padding: 1em 0.5em;
+  background: var(--background-colour);
+}
+img {
+  max-width: 100%;
+}
+.board {
+  position: relative;
+  width: 1200px;
+  height: 900px;
+  background: ghostwhite;
+  margin: 0 auto;
+  padding: 0.25em;
+}
+.mouse {
+  position: absolute;
+  width: 75px;
+  left: 60px
+}
