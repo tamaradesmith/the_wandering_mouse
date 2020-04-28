@@ -9,9 +9,16 @@
 }
 
 body {
-  padding: 1em 0.5em;
+  padding: .2em 0.5em;
   background: var(--background-colour);
   font-size: 2em;
+}
+h1{
+  color: var(--secondary-colour);
+  font-size: 2em;
+  font-weight: 700;
+  padding: .2em;
+  text-align: center;
 }
 img {
   max-width: 100%;
@@ -38,6 +45,7 @@ img {
 .rock {
   position: absolute;
   width: 100px;
+  /* z-index: 1; */
 }
 
 /* Fades and Messages */
@@ -45,6 +53,8 @@ img {
   transition: opacity 2s linear;
   transform: translate(70);
   opacity: 1;
+  z-index: 1;
+
 }
 .fadeout {
   transition: opacity 2s linear;
@@ -60,6 +70,8 @@ img {
   transition: opacity 2s linear;
   transform: translate(70);
   opacity: 1;
+  z-index: 1;
+
 }
 .message-div {
   margin: 2em auto;
@@ -68,5 +80,4 @@ img {
   color: var(--secondary-colour);
   width: 400px;
   padding: 1em 0.5em;
-  /* left: 25%; */
 }

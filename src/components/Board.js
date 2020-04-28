@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 
+import { RocksQuery } from '../js/rocksQuery';
+
 import Mouse from './character/Mouse';
 import Hole from './character/Hole';
 import Rock from './character/Rock';
@@ -12,7 +14,7 @@ function Board(props) {
   const [boardTop, setBoardTop] = useState(null);
   const [hole, setHole] = useState({ left: 1100, top: 700, bottom: 750, right: 1180 });
 
-  const [rocks, setRocks] = useState([]);
+  // const [rocks, setRocks] = useState([]);
 
   const [rockLocations, setRocksLocations] = useState([])
 
@@ -82,6 +84,7 @@ function Board(props) {
         setMouseFreeze(true);
         document.querySelector("#mouse").classList.toggle("fadeout");
         document.querySelector("#mouse").classList.toggle("fadein");
+        document.querySelector("#messageText").innerText = "Wandering Mouse wandered home!!!";
         setMouseLeft(hole.left);
         setMouseTop(hole.top);
         setTimeout(() => {
@@ -96,6 +99,7 @@ function Board(props) {
     setTimeout(() => {
       setMouseLeft(25);
       setMouseTop(25);
+      setRocksLocations([]);
       setMouseFreeze(false);
       document.querySelector("#message").classList.toggle("show")
       document.querySelector("#mouse").classList.toggle("fadein");
@@ -103,63 +107,51 @@ function Board(props) {
     }, 3000);
   }
 
-  //  // ROCKS 
-  function setupRocks() {
-    if (rockLocations !== 0) {
-      const number = Math.ceil(Math.random() * 3);
-      const result = [];
-      let index = 0;
-      while (index < number) {
-        result.push({ rock: `rock${index}` });
-        index++;
-      }
-      setRocks(result);
-    }
-  };
-
-  function rockLocation(newRock) {
-    setRocksLocations(rockLocations => [...rockLocations, newRock]);
+  function mouseCaught() {
+    setMouseFreeze(true);
+    document.querySelector("#mouse").classList.toggle("fadeout");
+    document.querySelector("#mouse").classList.toggle("fadein");
+    document.querySelector("#messageText").innerText = `Mouse caught by Hudson the Rock Hidding Kitten`;
+    setTimeout(() => {
+      document.querySelector("#message").classList.toggle("show");
+      resetMouse();
+    }, 1000);
   }
 
-  function checkRockLocation() {
-    const rocklist = rockLocations
-    while (rockLocations.length > rocks.length){
-      rocklist.shift();
-    }
-    if (rockLocations.length !== 0) {
-      const newRock = rockLocations[rockLocations.length - 1];
-      rockLocations.forEach((oldRock, index) => {
-        if (index !== rockLocations.length - 1) {
-          if (oldRock.left < newRock.right && oldRock.right > newRock.left) {
-            console.log("conflict");
-          }
-        }
-      })
-    }
+  //  // ROCKS 
+  function setupRocks() {
+    const result = RocksQuery.setup(rockLocations)
+    setRocksLocations(result)
   };
+
+
+  function mouseRock() {
+    const result = RocksQuery.overRock(mouseLeft, mouseTop, rockLocations);
+    const cat = (result) ? RocksQuery.catInRock() : false;
+    if (cat === true) {
+      mouseCaught();
+    }
+  }
+
 
   useEffect(() => {
     setBoardCoors();
+    // setupRocks()
   }, [boardLeft === null]);
 
   useEffect(() => {
-    setupRocks();
-  }, [rocks.length === 0])
-
-  useEffect(() => {
     if (!mouseFreeze) {
-      mouseHole()
+      mouseHole();
+      mouseRock();
     }
   }, [mouseLeft]);
 
   useEffect(() => {
-    checkRockLocation();
-  }, [rockLocations])
-
+    setupRocks();
+  }, [rockLocations.length === 0])
 
   return (
     <main id="board" className="board" onMouseMove={findCoords} >
-
       <div className="mouse fadein" id="mouse" style={{ left: mouseLeft, top: mouseTop }}>
         <Mouse />
       </div>
@@ -168,10 +160,10 @@ function Board(props) {
         <Hole />
       </div>
 
-      {rocks !== null ? (
+      {rockLocations !== null ? (
         <>
-          {rocks.map((rock, index) => (
-            <Rock key={index} id={rock} rockLocation={rockLocation} />
+          {rockLocations.map((rock, index) => (
+            <Rock key={index} location={rock} />
           ))}
         </>
       ) : (null)}
@@ -179,7 +171,7 @@ function Board(props) {
 
 
       <div id="message" className="message-div hidden">
-        <p  >Wandering Mouse wandered home!!! </p>
+        <p id="messageText" >Wandering Mouse wandered home!!! </p>
       </div>
     </main>
   )
