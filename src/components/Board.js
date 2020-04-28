@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 
 import Mouse from './character/Mouse';
 import Hole from './character/Hole';
+import Rock from './character/Rock';
 
 function Board(props) {
   const [mouseFreeze, setMouseFreeze] = useState(false);
@@ -10,6 +11,11 @@ function Board(props) {
   const [boardLeft, setBoardLeft] = useState(null);
   const [boardTop, setBoardTop] = useState(null);
   const [hole, setHole] = useState({ left: 1100, top: 700, bottom: 750, right: 1180 });
+
+  const [rocks, setRocks] = useState([]);
+
+  const [rockLocations, setRocksLocations] = useState([])
+
   function setBoardCoors() {
     let board = document.querySelector("#board");
     let left = 0;
@@ -45,14 +51,14 @@ function Board(props) {
         const left = (xpos - mouseLeft);
         const top = ypos - mouseTop;
         if (left < 25) {
-          setMouseLeft(mouseLeft + 5);
+          setMouseLeft(mouseLeft + Math.ceil(Math.random() * 10));
         } else if (left > 55) {
-          setMouseLeft(mouseLeft - 5);
+          setMouseLeft(mouseLeft - Math.ceil(Math.random() * 10));
         }
         if (top < 25) {
-          setMouseTop(mouseTop + 5);
+          setMouseTop(mouseTop + Math.ceil(Math.random() * 10));
         } else if (top > 55) {
-          setMouseTop(mouseTop - 5);
+          setMouseTop(mouseTop - Math.ceil(Math.random() * 10));
         }
       }
     }
@@ -76,7 +82,6 @@ function Board(props) {
         setMouseFreeze(true);
         document.querySelector("#mouse").classList.toggle("fadeout");
         document.querySelector("#mouse").classList.toggle("fadein");
-
         setMouseLeft(hole.left);
         setMouseTop(hole.top);
         setTimeout(() => {
@@ -87,20 +92,59 @@ function Board(props) {
     }
   }
 
-  function resetMouse(){
+  function resetMouse() {
     setTimeout(() => {
       setMouseLeft(25);
       setMouseTop(25);
       setMouseFreeze(false);
       document.querySelector("#message").classList.toggle("show")
-      document.querySelector("#mouse").classList.toggle( "fadein");
+      document.querySelector("#mouse").classList.toggle("fadein");
       document.querySelector("#mouse").classList.toggle("fadeout");
     }, 3000);
   }
 
+  //  // ROCKS 
+  function setupRocks() {
+    if (rockLocations !== 0) {
+      const number = Math.ceil(Math.random() * 3);
+      const result = [];
+      let index = 0;
+      while (index < number) {
+        result.push({ rock: `rock${index}` });
+        index++;
+      }
+      setRocks(result);
+    }
+  };
+
+  function rockLocation(newRock) {
+    setRocksLocations(rockLocations => [...rockLocations, newRock]);
+  }
+
+  function checkRockLocation() {
+    const rocklist = rockLocations
+    while (rockLocations.length > rocks.length){
+      rocklist.shift();
+    }
+    if (rockLocations.length !== 0) {
+      const newRock = rockLocations[rockLocations.length - 1];
+      rockLocations.forEach((oldRock, index) => {
+        if (index !== rockLocations.length - 1) {
+          if (oldRock.left < newRock.right && oldRock.right > newRock.left) {
+            console.log("conflict");
+          }
+        }
+      })
+    }
+  };
+
   useEffect(() => {
     setBoardCoors();
   }, [boardLeft === null]);
+
+  useEffect(() => {
+    setupRocks();
+  }, [rocks.length === 0])
 
   useEffect(() => {
     if (!mouseFreeze) {
@@ -108,14 +152,32 @@ function Board(props) {
     }
   }, [mouseLeft]);
 
+  useEffect(() => {
+    checkRockLocation();
+  }, [rockLocations])
+
+
   return (
     <main id="board" className="board" onMouseMove={findCoords} >
+
       <div className="mouse fadein" id="mouse" style={{ left: mouseLeft, top: mouseTop }}>
-        <Mouse boardLeft={boardLeft} boardTop={boardTop} />
+        <Mouse />
       </div>
+
       <div id="hole" className='mouse-hole' style={{ left: hole.left, top: hole.top }}>
         <Hole />
       </div>
+
+      {rocks !== null ? (
+        <>
+          {rocks.map((rock, index) => (
+            <Rock key={index} id={rock} rockLocation={rockLocation} />
+          ))}
+        </>
+      ) : (null)}
+
+
+
       <div id="message" className="message-div hidden">
         <p  >Wandering Mouse wandered home!!! </p>
       </div>

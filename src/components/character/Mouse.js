@@ -5,7 +5,7 @@ function Mouse(props) {
 
   return (
 
-    <div >
+    <div>
       <img src={mouse} alt={"Mouse Character"} />
     </div>
 
