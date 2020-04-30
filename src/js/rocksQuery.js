@@ -24,8 +24,16 @@ const RocksQuery = {
     }
   },
   location() {
-    const xPos = Math.ceil(Math.random() * 1100);
-    const yPos = Math.ceil(Math.random() * 750);
+    let xPos = Math.ceil(Math.random() * 1100);
+    let yPos = Math.ceil(Math.random() * 750);
+    while (xPos < 100 && yPos < 100 ) {
+      xPos = Math.ceil(Math.random() * 1100);
+      yPos = Math.ceil(Math.random() * 750);
+      if (xPos > 1100 && yPos > 700){
+        xPos = 10;
+        yPos = 10;
+      };
+    };
     const location = { left: xPos, right: xPos + 100, top: yPos, bottom: yPos + 75 };
     return location;
   },
@@ -34,8 +42,7 @@ const RocksQuery = {
       let flag = 0;
       while (oldRock.left < newRock.right && oldRock.right > newRock.left && flag === 0) {
         if (oldRock.top < newRock.bottom && oldRock.bottom > newRock.top) {
-          console.log("While");
-          newRock = this.location();
+                  newRock = this.location();
         } else {
           flag = 1;
         };
@@ -53,7 +60,7 @@ const RocksQuery = {
         }
       }
     })
-    return result
+    return result;
   },
   catInRock(){
     return ( Math.random() < .5) ? true : false;

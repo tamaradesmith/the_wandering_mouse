@@ -45,9 +45,16 @@ img {
 .rock {
   position: absolute;
   width: 100px;
-  /* z-index: 1; */
 }
-
+.grass{
+  position: absolute;
+  width: 100px;
+}
+.cat{
+  position: absolute;
+  width: 150px;
+  height: 125px;
+}
 /* Fades and Messages */
 .fadein {
   transition: opacity 2s linear;
@@ -73,6 +80,7 @@ img {
   z-index: 1;
 
 }
+
 .message-div {
   margin: 2em auto;
   text-align: center;
