@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { RocksQuery } from '../js/rocksQuery';
 import { GrassQuery } from '../js/grassQuery';
 import { CatQuery } from '../js/catQuery';
+import { MouseQuery } from '../js/mouseQuery';
 
 import Mouse from './character/Mouse';
 import Hole from './character/Hole';
@@ -16,8 +17,10 @@ function Board(props) {
   const [boardTop, setBoardTop] = useState(null);
 
   const [mouseFreeze, setMouseFreeze] = useState(false);
-  const [mouseTop, setMouseTop] = useState(25);
-  const [mouseLeft, setMouseLeft] = useState(25);
+  const [mouse, setMouse] = useState({ left: 25, top: 25, bottom: 100, right: 100 })
+  const [mouseMoving, setMouseMoving] = useState(0);
+  // const [mouseTop, setMouseTop] = useState(25);
+  // const [mouseLeft, setMouseLeft] = useState(25);
 
   const [cat, setCat] = useState({ left: 100, top: 100, bottom: 200, right: 250 });
   const [catFreeze, setCatFreeze] = useState(true);
@@ -51,81 +54,52 @@ function Board(props) {
       }
       xpos -= boardLeft;
       ypos -= boardTop;
-      overMouse(xpos, ypos);
-    }
-  }
-
-  function overMouse(xpos, ypos) {
-    if (xpos > mouseLeft && xpos < mouseLeft + 75) {
-      if (ypos > mouseTop && ypos < mouseTop + 75) {
-        const left = (xpos - mouseLeft);
-        const top = ypos - mouseTop;
-        if (left < 25) {
-          setMouseLeft(mouseLeft + Math.ceil(Math.random() * 10));
-        } else if (left > 55) {
-          setMouseLeft(mouseLeft - Math.ceil(Math.random() * 10));
-        }
-        if (top < 25) {
-          setMouseTop(mouseTop + Math.ceil(Math.random() * 10));
-        } else if (top > 55) {
-          setMouseTop(mouseTop - Math.ceil(Math.random() * 10));
-        }
+      const newMouse = MouseQuery.overMouse(xpos, ypos, mouse);
+      if (newMouse !== false){
+        setMouse(newMouse);
+        const move = (mouseMoving === 1) ? 0 : 1;
+        setMouseMoving(move);
       }
-    }
-    if (mouseLeft < 0) {
-      setMouseLeft(0 + 5);
-    }
-    if (mouseLeft + 75 > 1200) {
-      setMouseLeft(1200 - 80)
-    }
-    if (mouseTop < 0) {
-      setMouseTop(0 + 5);
-    }
-    if (mouseTop + 75 > 800) {
-      setMouseTop(800 - 80)
     }
   }
 
   function mouseHole() {
-    if (mouseLeft + 75 > hole.left && mouseLeft < hole.right) {
-      if (mouseTop < hole.bottom && mouseTop + 75 > hole.top) {
-        setMouseFreeze(true);
-        document.querySelector("#mouse").classList.toggle("fadeout");
-        document.querySelector("#mouse").classList.toggle("fadein");
-        document.querySelector("#messageText").innerText = "Wandering Mouse wandered home!!!";
-        setMouseLeft(hole.left);
-        setMouseTop(hole.top);
-        setTimeout(() => {
-          document.querySelector("#message").classList.toggle("show")
-          resetMouse();
-        }, 1000);
-      }
+    const result = MouseQuery.mouseHole(mouse, hole)
+    if (result === true) {
+      setMouseFreeze(true);
+      mouseCaught("Wandering Mouse wandered home!!!");
     }
   }
 
   function resetMouse() {
     setTimeout(() => {
-      setMouseLeft(25);
-      setMouseTop(25);
+      setMouse({ left: 25, right: 100, top: 25, bottom: 100 });
       setRocksLocations([]);
+      setGrassLocations([]);
       setMouseFreeze(false);
+      setCatFreeze(true)
       document.querySelector("#message").classList.toggle("show")
       document.querySelector("#mouse").classList.toggle("fadein");
       document.querySelector("#mouse").classList.toggle("fadeout");
+      document.querySelector("#aurora").classList.add("fadeout");
     }, 3000);
   }
 
-  function mouseCaught() {
+  function mouseCaught(message) {
     setMouseFreeze(true);
     document.querySelector("#mouse").classList.toggle("fadeout");
     document.querySelector("#mouse").classList.toggle("fadein");
-    document.querySelector('#cat').classList.add("hidden");
-    document.querySelector('#cat').classList.remove("show");
+    document.querySelector('#aurora').classList.add("hidden");
+    document.querySelector('#aurora').classList.remove("show");
 
     document.querySelectorAll(".rock").forEach(rock => {
       rock.classList.add("fadeout");
     })
-    document.querySelector("#messageText").innerText = `Mouse caught by Hudson the Rock Hidding Kitten`;
+    document.querySelectorAll(".grass").forEach(blade => {
+      blade.classList.add("fadeout");
+    })
+
+    document.querySelector("#messageText").innerText = message;
     setTimeout(() => {
       document.querySelector("#message").classList.toggle("show");
       resetMouse();
@@ -141,10 +115,10 @@ function Board(props) {
 
 
   function mouseRock() {
-    const result = RocksQuery.overRock(mouseLeft, mouseTop, rockLocations);
+    const result = RocksQuery.overRock(mouse, rockLocations);
     const cat = (result) ? RocksQuery.catInRock() : false;
     if (cat === true) {
-      mouseCaught();
+      mouseCaught(`Mouse caught by Hudson the Rock Hidding Kitten`);
     }
   }
 
@@ -158,8 +132,8 @@ function Board(props) {
   }
 
   function mouseGrass() {
-    const result = GrassQuery.overGrass(mouseLeft, mouseTop, grassLocations);
-    const cat = (result) ? activeCat() : '';
+    const result = GrassQuery.overGrass(mouse, grassLocations);
+    const Newcat = (result) ? activeCat() : '';
   }
 
   // Cat Named Aurora
@@ -174,9 +148,10 @@ function Board(props) {
     setCatFreeze(false);
   }
 
-  function mouseCat(){
-    const result = CatQuery.overCat(mouseLeft, mouseTop, cat)
-    const move = result ? mouseCaught() : CatQuery.move(mouseLeft, mouseTop, cat)
+  function mouseCat() {
+    const result = CatQuery.overCat(mouse, cat);
+    const message = "Aurora leaps out from the grass tuff and caughts the Wandering Mouse "
+    const Catmove = result ? mouseCaught(message) : CatQuery.move(mouse, cat)
   }
 
   useEffect(() => {
@@ -184,6 +159,7 @@ function Board(props) {
   }, [boardLeft === null]);
 
   useEffect(() => {
+    console.log("mouse")
     if (!mouseFreeze) {
       mouseHole();
       mouseRock();
@@ -192,16 +168,18 @@ function Board(props) {
     if (!catFreeze) {
       mouseCat();
     }
-  }, [mouseLeft]);
+  }, [mouse]);
 
   useEffect(() => {
     setupRocks();
   }, [rockLocations.length === 0]);
-
+  useEffect(() => {
+    setupGrass()
+  }, [grassLocations.length === 0])
 
   return (
     <main id="board" className="board" onMouseMove={findCoords} >
-      <div id="mouse" className="mouse fadein" style={{ left: mouseLeft, top: mouseTop }}>
+      <div id="mouse" className="mouse fadein" style={{ left: mouse.left, top: mouse.top }}>
         <Mouse />
       </div>
 
@@ -209,13 +187,10 @@ function Board(props) {
         <Hole />
       </div>
 
-      {rockLocations !== null ? (
-        <>
           {rockLocations.map((rock, index) => (
             <Rock key={index} location={rock} />
           ))}
-        </>
-      ) : (null)}
+
 
       {grassLocations.map((grass, index) => (
         <Grass key={index} location={grass} />

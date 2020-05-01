@@ -63,11 +63,11 @@ const GrassQuery = {
     })
     return grass;
   },
-  overGrass(left, top, grass) {
+  overGrass(mouse, grass) {
     let result = false;
     grass.forEach(blade => {
-      if (left < blade.right && left + 75 > blade.left) {
-        if (top < blade.bottom && top + 75 > blade.top) {
+      if (mouse.left < blade.right && mouse.right > blade.left) {
+        if (mouse.top < blade.bottom && mouse.bottom > blade.top) {
           result = (Math.random() < .3) ? true : false;
         };
       };

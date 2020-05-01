@@ -51,11 +51,11 @@ const RocksQuery = {
     })
     return newRock;
   },
-  overRock(left, top, rocks) {
+  overRock(mouse, rocks) {
     let result = false;
     rocks.forEach(rock => {
-      if (left < rock.right && left + 75 > rock.left) {
-        if (top < rock.bottom && top + 75 > rock.top) {
+      if (mouse.left < rock.right && mouse.right > rock.left) {
+        if (mouse.top < rock.bottom && mouse.bottom > rock.top) {
           result = true
         }
       }

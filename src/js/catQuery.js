@@ -13,32 +13,32 @@ const CatQuery = {
     const location = { left: xPos, right: xPos + 100, top: yPos, bottom: yPos + 100 };
     return location;
   },
-  overCat(left, top, cat) {
+  overCat(mouse, cat) {
     let result = false;
 
-    if (left < cat.right && left + 75 > cat.left) {
-      if (top < cat.bottom && top + 75 > cat.top) {
+    if (mouse.left < cat.right && mouse.right > cat.left) {
+      if (mouse.top < cat.bottom && mouse.bottom > cat.top) {
         result = true;
       }
     };
     return result;
   },
-  move(left, top, cat) {
-    if (left > cat.left) {
+  move(mouse, cat) {
+    if (mouse.left > cat.left) {
       cat.left = cat.left + Math.ceil(Math.random() * 5);
       cat.right = cat.left + 150;
-    } else {
+    } else if (mouse.left < cat.left) {
       cat.left = cat.left - Math.ceil(Math.random() * 5);
       cat.right = cat.left + 150;
     }
-    if (top > cat.top) {
+    if (mouse.top > cat.top) {
       cat.top = cat.top + Math.ceil(Math.random() * 5);
       cat.bottom = cat.top + 150;
-    } else {
+    } else if (mouse.top < cat.top) {
       cat.top = cat.top - Math.ceil(Math.random() * 5);
       cat.bottom = cat.top + 150;
     }
-
+return cat;
   },
 }
 
