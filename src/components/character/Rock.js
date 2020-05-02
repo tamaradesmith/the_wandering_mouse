@@ -17,9 +17,7 @@ function Rock(props) {
   }, [number === null])
 
   return (
-    <div >
       <img src={rocks[number]} alt={"rock"} className="rock" style={{ left: location.left, top: location.top }} />
-    </div>
   );
 };
 

@@ -9,15 +9,15 @@
 }
 
 body {
-  padding: .2em 0.5em;
+  padding: 0.2em 0.5em;
   background: var(--background-colour);
   font-size: 2em;
 }
-h1{
+h1 {
   color: var(--secondary-colour);
   font-size: 2em;
   font-weight: 700;
-  padding: .2em;
+  padding: 0.2em;
   text-align: center;
 }
 img {
@@ -31,13 +31,16 @@ img {
   margin: 0 auto;
   padding: 0.25em;
 }
-/* Images */
-.mouse {
-  position: absolute;
-  width: 75px;
-  height: 75px;
-  z-index: 2;
+.score {
+  width: 1200px;
+  padding: 0.25em;
+  margin: 0.5em auto;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  border: 1px solid var(--board-colour);
 }
+/* Images */
 
 .mouse-hole {
   position: absolute;
@@ -45,15 +48,34 @@ img {
 .rock {
   position: absolute;
   width: 100px;
+  height: 75px;
 }
-.grass{
+.grass {
   position: absolute;
   width: 100px;
+  height: 100px;
 }
-.cat{
+.cat {
   position: absolute;
   width: 150px;
   height: 125px;
+}
+.paws {
+  position: absolute;
+  width: 30px;
+  height: 30px;
+  z-index: 0;
+}
+.mice{
+  position: absolute;
+  width: 60px;
+  height: 60px;
+}
+.mouse {
+  position: absolute;
+  width: 75px;
+  height: 75px;
+  z-index: 1;
 }
 /* Fades and Messages */
 .fadein {
@@ -61,7 +83,6 @@ img {
   transform: translate(70);
   opacity: 1;
   z-index: 1;
-
 }
 .fadeout {
   transition: opacity 2s linear;
@@ -78,7 +99,12 @@ img {
   transform: translate(70);
   opacity: 1;
   z-index: 1;
-
+}
+.btn{
+  padding: .25em .5em;
+  font-size: .7em;
+  background: var(--background-colour);
+  border: 2px solid var(--board-colour);
 }
 
 .message-div {

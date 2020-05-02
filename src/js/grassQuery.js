@@ -1,5 +1,5 @@
 const GrassQuery = {
-  setup(grassLocations) {
+  setup() {
     const number = Math.ceil(Math.random() * 2);
     const grass = [];
     let index = 0;
@@ -22,7 +22,7 @@ const GrassQuery = {
   location() {
     let xPos = Math.ceil(Math.random() * 1100);
     let yPos = Math.ceil(Math.random() * 700);
-    while (xPos < 100 && yPos < 100) {
+    while ((xPos < 100 && yPos < 100) || (xPos > 1000 && yPos > 600) ) {
       xPos = Math.ceil(Math.random() * 1100);
       yPos = Math.ceil(Math.random() * 700);
       if (xPos > 1100 && yPos > 700) {
