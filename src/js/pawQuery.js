@@ -48,21 +48,34 @@ const PawQuery = {
     })
     return paw;
   },
-  overPaw(mouse, paws) {
+  overPaw(mouse, paws, found) {
     let result = { result: false };
+
     paws.forEach((paw, index) => {
       if (mouse.left < paw.right && mouse.right > paw.left) {
         if (mouse.top < paw.bottom && mouse.bottom > paw.top) {
           if (!paw.freeze) {
-            result.bomb = (Math.floor(Math.random() * paws.length - 1) === index) ? true : false
-            result.id = paw.paw;
-            result.result = true;
-            result.index = index;
+            let number = 0;
+            paws.forEach(paw => {
+              number = (paw.freeze === false) ? number + 1 : number;
+            })
+            console.log("overPaw -> number", number);
+            if (found !== true) {
+              const rNumber = Math.ceil(Math.random() * number)
+              result.bomb = (rNumber === number) ? true : false
+              result.id = paw.paw;
+              result.result = true;
+              result.index = index;
+            } else {
+              result.bomb = false;
+              result.id = paw.paw;
+              result.result = true;
+              result.index = index;
+            }
           }
         };
       };
     });
-
     return result;
   },
   setupMouseBomb(mouse) {
@@ -75,19 +88,19 @@ const PawQuery = {
     };
     const locations = [];
     mice.forEach(one => {
-      const result = {id: one, freeze: false};
+      const result = { id: one, freeze: false };
       const hoz = Math.ceil(Math.random() * 75);
       const ver = Math.ceil(Math.random() * 75);
       const addHoz = (Math.random() < .5) ? true : false;
       const addVer = (Math.random() < .5) ? true : false;
-      if (addHoz){
+      if (addHoz) {
         result.left = mouse.left + hoz;
         result.right = result.left + 30;
       } else {
         result.left = mouse.left - hoz;
         result.right = result.left + 30;
       };
-      if (addVer){
+      if (addVer) {
         result.top = mouse.top + ver;
         result.bottom = result.top + 30;
       } else {
@@ -96,7 +109,7 @@ const PawQuery = {
       };
       locations.push(result);
     });
-   return locations;
+    return locations;
   },
 };
 
