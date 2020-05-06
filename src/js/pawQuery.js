@@ -59,7 +59,6 @@ const PawQuery = {
             paws.forEach(paw => {
               number = (paw.freeze === false) ? number + 1 : number;
             })
-            console.log("overPaw -> number", number);
             if (found !== true) {
               const rNumber = Math.ceil(Math.random() * number)
               result.bomb = (rNumber === number) ? true : false

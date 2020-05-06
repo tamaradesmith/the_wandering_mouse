@@ -39,7 +39,7 @@ function Board(props) {
   const [mouseBomb, setMouseBomb] = useState(1);
   const [found, setFound] = useState(false);
   const [miceLocatons, setMiceLocations] = useState([]);
-
+  const [miceCount, setMiceCount] = useState(0);
 
   function setBoardCoors() {
     let board = document.querySelector("#board");
@@ -89,10 +89,10 @@ function Board(props) {
   }
 
   function mouseHole() {
-    const result = MouseQuery.mouseHole(mouse, hole)
+    const result = MouseQuery.mouseHole(mouse, hole);
     if (result === true) {
-      setMouseFreeze(true);
-      mouseCaught("Wandering Mouse wandered home!!!");
+      // setMouseFreeze(true);
+      mouseCaught("Wandering Mouse wandered home!!!", "home");
       updateScore('home', true);
 
     }
@@ -100,20 +100,25 @@ function Board(props) {
 
   function resetMouse() {
     setTimeout(() => {
-      setMouse({ left: 25, right: 100, top: 25, bottom: 100 });
-      setRocksLocations([]);
-      setMouseFreeze(false);
-      setCatFreeze(true)
-      document.querySelector("#message").classList.toggle("show")
-      document.querySelector("#mouse").classList.toggle("fadein");
-      document.querySelector("#mouse").classList.toggle("fadeout");
-      document.querySelector("#aurora").classList.add("fadeout");
+      if (document.querySelector("#message") === null) {
+        console.log('null');
+      } else {
+        setMouse({ left: 25, right: 100, top: 25, bottom: 100 });
+        setRocksLocations([]);
+        setMouseFreeze(false);
+        document.querySelector("#message").classList.remove("show")
+        document.querySelector("#mouse").classList.add("fadein");
+        document.querySelector("#mouse").classList.remove("fadeout");
+        document.querySelector("#aurora").classList.add("fadeout");
+      }
     }, 3000);
   }
 
   function mouseCaught(message, type) {
     setMouseFreeze(true);
     setFound(false);
+    console.log("mouse home")
+
     document.querySelector("#mouse").classList.toggle("fadeout");
     document.querySelector("#mouse").classList.toggle("fadein");
     document.querySelector('#aurora').classList.add("hidden");
@@ -124,17 +129,23 @@ function Board(props) {
     })
     document.querySelectorAll(".grass").forEach(blade => {
       blade.classList.add("fadeout");
-    })
+    });
+
     if (type !== 'home') {
       setMouseBomb(1);
-    }
+      if (miceLocatons.length !== 0) {
+        setMiceLocations([]);
+      };
+    };
+
     updateScore(type, false);
 
     document.querySelector("#messageText").innerText = message;
+    document.querySelector("#message").classList.toggle("show");
     setTimeout(() => {
-      document.querySelector("#message").classList.toggle("show");
       resetMouse();
-    }, 1000);
+    }, 500);
+
   }
 
   //  // ROCKS 
@@ -161,6 +172,7 @@ function Board(props) {
       blade.classList.remove("fadeout");
     })
     setupCat();
+    setupPaws();
   }
 
   function mouseGrass() {
@@ -172,8 +184,8 @@ function Board(props) {
   function setupCat() {
     const location = CatQuery.location();
     setCat(location);
+    setCatFreeze(true);
 
-    setupPaws();
   }
 
   function activeCat() {
@@ -215,19 +227,34 @@ function Board(props) {
 
 
   function auroraMice() {
-    const result = CatQuery.overMice(cat, miceLocatons);
-    miceLocatons.forEach(mice =>{
-    console.log("auroraMice -> mice", mice);
-      
+    const result = CatQuery.overMice(cat, miceLocatons, catFreeze);
+    let count = miceCount;
+    miceLocatons.forEach(mice => {
       const miceId = document.querySelector(`#${mice.id}`);
-      if(miceId && !mice.freeze ){
+      if (miceId && mice.freeze) {
         miceId.remove();
+        count--;
       }
     })
+    if (count <= 0) {
+      setMiceFreeze(true);
+    } else {
+      setMiceCount(count);
+    }
+
+    if (result.status) {
+      setCatFreeze(true);
+      document.querySelector('#aurora').classList.add("hidden");
+      document.querySelector('#aurora').classList.remove("show");
+      setTimeout(() => {
+        setupCat();
+      }, 2000);
+    }
   }
 
   function handleMouseBomb() {
     if (mouseBomb > 0) {
+      setMiceLocations([]);
       const bomb = PawQuery.setupMouseBomb(mouse);
       setMiceLocations(bomb);
       setMouseBomb(mouseBomb - 1)
@@ -266,10 +293,18 @@ function Board(props) {
     }
   }, [rockLocations]);
 
+  useEffect(() => {
+    setMiceCount(miceLocatons.length);
 
+  }, [miceLocatons])
   return (
     <main  >
       <div id="board" className="board" onMouseMove={findCoords}>
+
+
+        <div id="message" className="message-div hidden">
+          <p id="messageText"> </p>
+        </div>
 
         <div id="mouse" className="mouse fadein" style={{ left: mouse.left, top: mouse.top }}>
           <Mouse />
@@ -301,11 +336,10 @@ function Board(props) {
         ))}
 
 
-        <div id="message" className="message-div hidden">
-          <p id="messageText"> </p>
-        </div>
+
       </div>
 
+      {/* <Message text={MessageText} /> */}
       <Score score={score} mouseBombCount={mouseBomb} mouseBomb={handleMouseBomb} />
     </main>
   )

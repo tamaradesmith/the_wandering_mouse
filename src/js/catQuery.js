@@ -40,21 +40,26 @@ const CatQuery = {
     }
     return cat;
   },
-  overMice(cat, mice) {
-    let status = false;
+  overMice(cat, mice, freeze) {
+    let result = { status: false, mice: "none" };
     mice.map((mouse) => {
-      if (mouse.freeze === false){
-      let oneMouse = false;
-      if (mouse.left < cat.right && mouse.right > cat.left) {
-        if (mouse.top < cat.bottom && mouse.bottom > cat.top) {
-          status = true;
+      if (!freeze) {
+        if (mouse.freeze === false) {
+          let oneMouse = false;
+          if (mouse.left < cat.right && mouse.right > cat.left) {
+            if (mouse.top < cat.bottom && mouse.bottom > cat.top) {
+              result.status = true;
+              mouse.freeze = true;
+            }
+          };
+          if (oneMouse === false) {
+            this.miceMove(mouse);
+          }
         }
-      };
-      if (oneMouse === false) {
-       this.miceMove(mouse);
-      }}
+      } else {
+        this.miceMove(mouse);
+      }
     });
-    const result = { status: status }
     return result;
   },
   miceMove(mouse) {
