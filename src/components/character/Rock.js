@@ -12,8 +12,8 @@ function Rock(props) {
   const [number, setNumber] = useState(null)
 
   useEffect(() => {
-    const number = Math.floor(Math.random() * 3);
-    setNumber(number);
+    setNumber( Math.floor(Math.random() * 3));
+     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [number === null])
 
   return (

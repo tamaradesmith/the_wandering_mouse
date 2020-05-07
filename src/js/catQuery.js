@@ -42,7 +42,7 @@ const CatQuery = {
   },
   overMice(cat, mice, freeze) {
     let result = { status: false, mice: "none" };
-    mice.map((mouse) => {
+    mice.forEach((mouse) => {
       if (!freeze) {
         if (mouse.freeze === false) {
           let oneMouse = false;
@@ -50,6 +50,7 @@ const CatQuery = {
             if (mouse.top < cat.bottom && mouse.bottom > cat.top) {
               result.status = true;
               mouse.freeze = true;
+              oneMouse = true
             }
           };
           if (oneMouse === false) {
@@ -84,6 +85,7 @@ const CatQuery = {
     if (mouse.top < 0 || mouse.bottom > 800 || mouse.left < 0 || mouse.right > 1200) {
       mouse.freeze = true;
     }
+    return "done";
   },
 }
 
