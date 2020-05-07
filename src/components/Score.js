@@ -4,19 +4,27 @@ function Score(props) {
 
   const { score, mouseBombCount } = props;
 
-  function handleClick(event){
+  function handleClick(event) {
     props.mouseBomb();
   }
 
 
   return (
-    <main className="score">
+    <main >
+    <div className="score">
+    <h3> Session Score:</h3>
       <p> Level: {score.level} </p>
       <p> Aurora: {score.grass}</p>
       <p> Husdon: {score.rock} </p>
       <p> Home: {score.home} </p>
-      <p> Mouse Bomb: <button className="btn" onClick={handleClick}>{mouseBombCount}  </button></p>
+      <div>
+        <p> Tools</p>
+        <p>
+          Mouse Bomb: <button className="btn" onClick={handleClick}>{mouseBombCount}  </button>
+        </p>
+      </div>
 
+    </div>
     </main>
   )
 }

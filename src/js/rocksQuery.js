@@ -1,35 +1,36 @@
 const RocksQuery = {
-  setup(rockLocations) {
-    if (rockLocations !== 0) {
-      const number = Math.ceil(Math.random() * 3) + 1;
-      const rocks = [];
-      let index = 0;
-      while (index < number) {
-        rocks.push({ rock: `rock${index}` });
-        index++;
-      }
-      const result = [];
-      rocks.forEach(rock => {
-        const newRock = this.location();
-        if (result.length === 0) {
-          result.push(newRock);
-        } else {
-          const checkedRock = this.checkRock(result, newRock);
-          if (checkedRock !== "conflict") {
-            result.push(checkedRock)
-          }
-        }
-      })
-      return result;
+  setup(level) {
+    const add = Math.ceil(level / 3);
+    console.log("setup -> number", add);
+    const number = Math.ceil(Math.random() * 3) + add;
+    const rocks = [];
+    let index = 0;
+    while (index < number) {
+      rocks.push({ rock: `rock${index}` });
+      index++;
     }
+    const result = [];
+    rocks.forEach(rock => {
+      const newRock = this.location();
+      if (result.length === 0) {
+        result.push(newRock);
+      } else {
+        const checkedRock = this.checkRock(result, newRock);
+        if (checkedRock !== "conflict") {
+          result.push(checkedRock);
+        };
+      };
+    });
+    return result;
   },
+
   location() {
     let xPos = Math.ceil(Math.random() * 1100);
     let yPos = Math.ceil(Math.random() * 700);
-    while ((xPos < 100 && yPos < 100) ||( xPos > 1000 && yPos > 600) ) {
+    while ((xPos < 100 && yPos < 100) || (xPos > 1000 && yPos > 600)) {
       xPos = Math.ceil(Math.random() * 1100);
       yPos = Math.ceil(Math.random() * 700);
-      if (xPos > 1100 && yPos > 700){
+      if (xPos > 1100 && yPos > 700) {
         xPos = 10;
         yPos = 10;
       };
@@ -42,7 +43,7 @@ const RocksQuery = {
       let flag = 0;
       while (oldRock.left < newRock.right && oldRock.right > newRock.left && flag === 0) {
         if (oldRock.top < newRock.bottom && oldRock.bottom > newRock.top) {
-                  newRock = this.location();
+          newRock = this.location();
         } else {
           flag = 1;
         };
@@ -62,8 +63,8 @@ const RocksQuery = {
     })
     return result;
   },
-  catInRock(){
-    return ( Math.random() < .5) ? true : false;
+  catInRock() {
+    return (Math.random() < .5) ? true : false;
   }
 }
 

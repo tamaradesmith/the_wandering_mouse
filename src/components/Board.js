@@ -23,6 +23,7 @@ function Board(props) {
   const [boardLeft, setBoardLeft] = useState(null);
   const [boardTop, setBoardTop] = useState(null);
 
+  const [mouseFollow, setMouseFollow] = useState(false);
   const [mouseFreeze, setMouseFreeze] = useState(false);
   const [mouse, setMouse] = useState({ left: 25, top: 25, bottom: 100, right: 100 })
   const [mouseMoving, setMouseMoving] = useState(0);
@@ -39,7 +40,6 @@ function Board(props) {
   const [mouseBomb, setMouseBomb] = useState(1);
   const [found, setFound] = useState(false); // mouse bomb found
   const [miceLocations, setMiceLocations] = useState([]);
-  const [miceCount, setMiceCount] = useState(0);
 
   function setBoardCoors() {
     let board = document.querySelector("#board");
@@ -66,13 +66,20 @@ function Board(props) {
       }
       xpos -= boardLeft;
       ypos -= boardTop;
-      const newMouse = MouseQuery.overMouse(xpos, ypos, mouse);
-      if (newMouse !== false) {
+      if (mouseFollow === true) {
+        console.log('move');
+        const newMouse = MouseQuery.overMouse(xpos, ypos, mouse);
+        if (newMouse !== false) {
         setMouse(newMouse);
         const move = (mouseMoving === 1) ? 0 : 1;
         setMouseMoving(move);
-      }
-    }
+        };
+      };
+    };
+  };
+
+  function handleMouseClick() {
+    setMouseFollow(mouseFollow === true ? false : true);
   }
 
   function updateScore(type) {
@@ -83,7 +90,6 @@ function Board(props) {
     } else {
       newScore[type] = score[type] + 1;
       newScore.level = 1;
-
     }
     setScore(newScore)
   }
@@ -98,7 +104,7 @@ function Board(props) {
   function resetMouse() {
     setTimeout(() => {
       if (document.querySelector("#message") === null) {
-        console.log('null');
+        console.log('problem with reset');
       } else {
         setMouse({ left: 25, right: 100, top: 25, bottom: 100 });
         setMouseFreeze(false);
@@ -107,9 +113,7 @@ function Board(props) {
         document.querySelector("#mouse").classList.add("fadein");
         document.querySelector("#mouse").classList.remove("fadeout");
         document.querySelector("#aurora").classList.add("fadeout");
-        console.log("Reset mouse")
         setupRocks()
-        console.log("resetMouse -> MiceLocations", miceLocations);
         setMiceLocations([]);
         setMiceFreeze(true);
       }
@@ -129,12 +133,9 @@ function Board(props) {
 
     document.querySelectorAll(".rock").forEach(rock => {
       rock.classList.add("fadeout");
-      // rock.remove();
-
     })
     document.querySelectorAll(".grass").forEach(blade => {
       blade.classList.add("fadeout");
-      // blade.remove();
     });
 
     if (type !== 'home') {
@@ -148,7 +149,7 @@ function Board(props) {
 
   //  // ROCKS 
   function setupRocks() {
-    const result = RocksQuery.setup(rockLocations);
+    const result = RocksQuery.setup(score.level);
     setRocksLocations(result);
     document.querySelectorAll(".rock").forEach(blade => {
       blade.classList.remove("fadeout");
@@ -292,12 +293,14 @@ function Board(props) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [rockLocations]);
 
+
   useEffect(() => {
-    setMiceCount(miceLocations.length);
-  }, [miceLocations])
+    console.log(mouseFollow);
+  }, [mouseFollow])
+
   return (
     <main  >
-      <div id="board" className="board" onMouseMove={findCoords}>
+      <div id="board" className="board" onClick={handleMouseClick} onMouseMove={findCoords}>
 
 
         <div id="message" className="message-div hidden">
