@@ -102,7 +102,7 @@ img {
   z-index: 1;
 }
 .btn{
-  padding: .25em .5em;
+  padding: .1em 1em;
   font-size: .7em;
   background: var(--background-colour);
   border: 2px solid var(--board-colour);
