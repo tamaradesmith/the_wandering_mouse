@@ -1,17 +1,22 @@
 const MouseQuery = {
   overMouse(xpos, ypos, mouse) {
     const newMouse = mouse;
+    const hoz = xpos - (mouse.left + (75 / 2));
+    const ver = ypos - (mouse.top + (75 / 2));
 
-    if (xpos > mouse.left + (75 / 2)){
-      newMouse.left = mouse.left + 3;
-    } else if (xpos < mouse.left + (75 / 2)){
-      newMouse.left = mouse.left - 3;
-    };
-    if (ypos > mouse.top + (75 / 2)) {
-      newMouse.top = mouse.top + 3;
-    } else if (ypos < mouse.top + (75/2)) {
-      newMouse.top = mouse.top - 3;
-    };
+    if (hoz > -125 && hoz < 125 && ver > -125 && ver < 125) {
+      if (hoz >= 0) {
+        newMouse.left = mouse.left + 2;
+      }
+      else if (hoz < 0) {
+        newMouse.left = mouse.left - 2;
+      };
+      if (ver >= 0) {
+        newMouse.top = mouse.top + 2;
+      } else if (ver < 0) {
+        newMouse.top = mouse.top - 2;
+      };
+    }
     if (newMouse.left < 0) {
       mouse.left = 0 + 5;
     }
@@ -24,10 +29,9 @@ const MouseQuery = {
     if (newMouse.top + 75 > 800) {
       newMouse.top = 800 - 80;
     }
-      newMouse.right = newMouse.left + 75;
-      newMouse.bottom = newMouse.top + 75;
-      return newMouse;
-
+    newMouse.right = newMouse.left + 75;
+    newMouse.bottom = newMouse.top + 75;
+    return newMouse;
   },
   mouseHole(mouse, hole) {
     let result = false;

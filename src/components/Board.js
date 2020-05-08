@@ -91,7 +91,8 @@ function Board(props) {
       newScore[type] = score[type] + 1;
       newScore.level = 1;
     }
-    setScore(newScore)
+    setScore(newScore);
+    resetMouse();
   }
 
   function mouseHole() {
@@ -102,6 +103,7 @@ function Board(props) {
   }
 
   function resetMouse() {
+    setMouseFollow(false);
     setTimeout(() => {
       if (document.querySelector("#message") === null) {
         console.log('problem with reset');
@@ -122,6 +124,7 @@ function Board(props) {
 
   function mouseCaught(message, type) {
     setMouseFreeze(true);
+    updateScore(type);
 
     document.querySelector("#mouse").classList.add("fadeout");
     document.querySelector("#mouse").classList.remove("fadein");
@@ -143,8 +146,9 @@ function Board(props) {
 
     };
 
-    updateScore(type);
-    resetMouse();
+ 
+
+    // resetMouse();
   }
 
   //  // ROCKS 
@@ -167,7 +171,7 @@ function Board(props) {
   // // GRASS
 
   function setupGrass() {
-    const result = GrassQuery.setup();
+    const result = GrassQuery.setup(score.level);
     const grassLoc = GrassQuery.checkRocks(result, rockLocations);
     setGrassLocations(grassLoc);
     document.querySelectorAll(".grass").forEach(blade => {
@@ -199,9 +203,9 @@ function Board(props) {
 
   function mouseCat() {
     const result = CatQuery.overCat(mouse, cat);
-    const message = "Aurora leaps out from the grass tuff and caughts the Wandering Mouse "
-    result ? mouseCaught(message, "grass") : CatQuery.move(mouse, cat)
-  }
+    const message = "Aurora leaps out from the grass tuff and caughts the Wandering Mouse ";
+    result ? mouseCaught(message, "grass") : CatQuery.move(mouse, cat);
+  };
 
   //  PAW Function
 

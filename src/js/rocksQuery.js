@@ -1,7 +1,6 @@
 const RocksQuery = {
   setup(level) {
-    const add = Math.ceil(level / 3);
-    console.log("setup -> number", add);
+    const add =  (level < 3) ? 1 : level - 1;
     const number = Math.ceil(Math.random() * 3) + add;
     const rocks = [];
     let index = 0;
@@ -27,15 +26,21 @@ const RocksQuery = {
   location() {
     let xPos = Math.ceil(Math.random() * 1100);
     let yPos = Math.ceil(Math.random() * 700);
-    while ((xPos < 100 && yPos < 100) || (xPos > 1000 && yPos > 600)) {
-      xPos = Math.ceil(Math.random() * 1100);
-      yPos = Math.ceil(Math.random() * 700);
-      if (xPos > 1100 && yPos > 700) {
-        xPos = 10;
-        yPos = 10;
+    if (xPos < 120 && yPos < 120) {
+      if (xPos < 120) {
+        xPos = 125;
+      } else {
+        yPos = 125
+      }
+    }
+    if (xPos > 975 && yPos > 550) {
+      if (xPos > 1000) {
+        xPos = 975;
+      } else { 
+        yPos = 550;
       };
     };
-    const location = { left: xPos, right: xPos + 100, top: yPos, bottom: yPos + 100 };
+    const location = { left: xPos, right: xPos + 90, top: yPos, bottom: yPos + 90 };
     return location;
   },
   checkRock(rocks, newRock) {

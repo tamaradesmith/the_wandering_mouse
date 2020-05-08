@@ -25,17 +25,17 @@ const CatQuery = {
   },
   move(mouse, cat) {
     if (mouse.left > cat.left) {
-      cat.left = cat.left + Math.ceil(Math.random() * 5);
+      cat.left = cat.left + Math.ceil(Math.random() * 1);
       cat.right = cat.left + 150;
     } else if (mouse.left < cat.left) {
-      cat.left = cat.left - Math.ceil(Math.random() * 5);
+      cat.left = cat.left - Math.ceil(Math.random() * 1);
       cat.right = cat.left + 150;
     }
     if (mouse.top > cat.top) {
-      cat.top = cat.top + Math.ceil(Math.random() * 5);
+      cat.top = cat.top + Math.ceil(Math.random() * 1);
       cat.bottom = cat.top + 150;
     } else if (mouse.top < cat.top) {
-      cat.top = cat.top - Math.ceil(Math.random() * 5);
+      cat.top = cat.top - Math.ceil(Math.random() * 1);
       cat.bottom = cat.top + 150;
     }
     return cat;

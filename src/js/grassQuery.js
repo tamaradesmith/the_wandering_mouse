@@ -1,6 +1,7 @@
 const GrassQuery = {
-  setup() {
-    const number = Math.ceil(Math.random() * 2);
+  setup(level) {
+    const add = (level < 4) ? 0 : level - 3
+    const number = Math.ceil(Math.random() * 2) + add;
     const grass = [];
     let index = 0;
     while (index < number) {
