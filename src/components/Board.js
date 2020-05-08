@@ -14,6 +14,7 @@ import Grass from './character/Grass';
 import Aurora from './character/Aurora';
 import Paws from './character/Paws';
 import Mice from './character/Mice';
+import Rules from './Rules';
 
 function Board(props) {
 
@@ -263,6 +264,13 @@ function Board(props) {
     }
   }
 
+  function showRules() {
+    document.querySelector('#rules').classList.toggle("fadeout");
+    document.querySelector('#rules').classList.toggle("fadein");
+
+
+  };
+
   useEffect(() => {
     setBoardCoors();
   }, [boardLeft]);
@@ -285,7 +293,6 @@ function Board(props) {
   }, [mouseMoving]);
 
   useEffect(() => {
-    console.log("rockslocation === 0")
     setupRocks();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [rockLocations === 0]);
@@ -300,12 +307,16 @@ function Board(props) {
 
   useEffect(() => {
     setupRocks()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [score.level])
 
   return (
-    <main  >
+    <main>
+
+
       <div id="board" className="board" onDoubleClick={handleMouseBomb} onClick={handleMouseClick} onMouseMove={findCoords}>
 
+      <Rules closeRules={showRules} />
 
         <div id="message" className="message-div hidden">
           <p id="messageText"> </p>
@@ -333,10 +344,10 @@ function Board(props) {
         </div>
 
         {pawLocations.map((paw, index) => (
-          <>
+          <div key={index}>
             <Paws key={index} location={paw} />
             <span id={paw.paw + "found"} className="fadeout paw-message" style={{ left: paw.left, top: paw.top }}> !!!MOUSE BOMB!!!</span>
-          </>
+          </div>
         ))}
 
         {miceLocations.map((mice, index) => (
@@ -348,6 +359,7 @@ function Board(props) {
       </div>
 
       <Score score={score} mouseBombCount={mouseBomb} mouseBomb={handleMouseBomb} />
+      <p className="rules-link" onClick={showRules}> Rules </p>
     </main>
   )
 }

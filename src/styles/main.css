@@ -9,7 +9,6 @@
 }
 
 body {
-  padding: 0.2em 0.5em;
   background: var(--background-colour);
   font-size: 2em;
 }
@@ -23,6 +22,14 @@ h1 {
 img {
   max-width: 100%;
 }
+h4 {
+  font-size: 1em;
+  padding: 0.4em 0.25em;
+  text-decoration: underline;
+}
+strong{
+  font-weight: 700;
+}
 .board {
   position: relative;
   width: 1200px;
@@ -34,7 +41,7 @@ img {
 .score {
   width: 1200px;
   padding: 0.25em;
-  margin: 0.5em auto;
+  margin: 0.25em auto;
   display: flex;
   justify-content: space-around;
   align-items: center;
@@ -68,7 +75,7 @@ img {
   height: 30px;
   z-index: 0;
 }
-.mice{
+.mice {
   position: absolute;
   width: 60px;
   height: 60px;
@@ -78,6 +85,34 @@ img {
   width: 75px;
   height: 75px;
   z-index: 1;
+}
+.rules {
+  background: var(--background-colour);
+  color: var(--secondary-colour);
+  position: absolute;
+  padding: 0.5em;
+  top: 25px;
+  left: 150px;
+  width: 900px;
+}
+.rules-header {
+  text-align: center;
+  font-size: 1.5em;
+  font-weight: 700;
+}
+.rules-p {
+  padding-left: 0.75em;
+  margin: .25em;
+
+}
+.rules-link {
+  margin: 0 auto;
+  width: 1200px;
+  color: var(--secondary-colour);
+  z-index: 1;
+}
+.rules-link:hover{
+  color: var(--board-colour);
 }
 /* Fades and Messages */
 .fadein {
@@ -90,6 +125,7 @@ img {
   transition: opacity 1.5s linear;
   transform: translate(70);
   opacity: 0;
+  z-index: 0;
 }
 .hidden {
   transition: opacity 1.5s linear;
@@ -102,13 +138,25 @@ img {
   opacity: 1;
   z-index: 1;
 }
-.btn{
-  padding: .1em 1em;
-  font-size: .7em;
-  background: var(--background-colour);
-  border: 2px solid var(--board-colour);
+.rules-hide{
+  display: none;
+    transition: opacity 1.5s linear;
+  transform: translate(70);
+  opacity: 0;
 }
-
+.btn {
+  padding: 0.1em 1em;
+  font-size: 0.7em;
+  background: var(--background-colour);
+  border: 2px solid var(--secondary-colour);
+  color: var(--secondary-colour);
+  margin: 0.5em;
+  float: right;
+}
+.btn:hover {
+  color: var(--background-colour);
+  background: var(--secondary-colour);
+}
 .message-div {
   margin: 2em auto;
   text-align: center;
@@ -117,8 +165,7 @@ img {
   width: 400px;
   padding: 1em 0.5em;
 }
-.paw-message{
+.paw-message {
   position: absolute;
   font-weight: 700px;
-  /* font-size: 1em; */
 }

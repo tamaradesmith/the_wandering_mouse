@@ -4,9 +4,6 @@ function Score(props) {
 
   const { score, mouseBombCount } = props;
 
-  function handleClick(event) {
-    props.mouseBomb();
-  }
 
 
   return (
