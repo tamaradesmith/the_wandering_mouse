@@ -44,7 +44,7 @@ const CatQuery = {
     let result = { status: false, mice: "none" };
     mice.forEach((mouse) => {
       if (!freeze) {
-        if (mouse.freeze === false) {
+        if (!mouse.freeze) {
           let oneMouse = false;
           if (mouse.left < cat.right && mouse.right > cat.left) {
             if (mouse.top < cat.bottom && mouse.bottom > cat.top) {
@@ -57,15 +57,15 @@ const CatQuery = {
             this.miceMove(mouse);
           }
         }
-      } else {
+      } else if (!mouse.freeze) {
         this.miceMove(mouse);
       }
     });
     return result;
   },
   miceMove(mouse) {
-    const ver = Math.ceil(Math.random() * 20);
-    const hor = Math.ceil(Math.random() * 20);
+    const ver = Math.ceil(Math.random() * 10);
+    const hor = Math.ceil(Math.random() * 10);
     const addVer = (Math.random() < .49) ? true : false;
     const addHor = (Math.random() < .49) ? true : false;
     if (addVer) {

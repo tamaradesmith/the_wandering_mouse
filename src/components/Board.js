@@ -67,12 +67,11 @@ function Board(props) {
       xpos -= boardLeft;
       ypos -= boardTop;
       if (mouseFollow === true) {
-        console.log('move');
         const newMouse = MouseQuery.overMouse(xpos, ypos, mouse);
         if (newMouse !== false) {
-        setMouse(newMouse);
-        const move = (mouseMoving === 1) ? 0 : 1;
-        setMouseMoving(move);
+          setMouse(newMouse);
+          const move = (mouseMoving === 1) ? 0 : 1;
+          setMouseMoving(move);
         };
       };
     };
@@ -92,7 +91,6 @@ function Board(props) {
       newScore.level = 1;
     }
     setScore(newScore);
-    resetMouse();
   }
 
   function mouseHole() {
@@ -102,12 +100,13 @@ function Board(props) {
     }
   }
 
-  function resetMouse() {
+  function resetMouse(type) {
     setMouseFollow(false);
     setTimeout(() => {
       if (document.querySelector("#message") === null) {
         console.log('problem with reset');
       } else {
+        updateScore(type);
         setMouse({ left: 25, right: 100, top: 25, bottom: 100 });
         setMouseFreeze(false);
         setFound(false);
@@ -115,7 +114,7 @@ function Board(props) {
         document.querySelector("#mouse").classList.add("fadein");
         document.querySelector("#mouse").classList.remove("fadeout");
         document.querySelector("#aurora").classList.add("fadeout");
-        setupRocks()
+        // setupRocks()
         setMiceLocations([]);
         setMiceFreeze(true);
       }
@@ -124,7 +123,6 @@ function Board(props) {
 
   function mouseCaught(message, type) {
     setMouseFreeze(true);
-    updateScore(type);
 
     document.querySelector("#mouse").classList.add("fadeout");
     document.querySelector("#mouse").classList.remove("fadein");
@@ -143,12 +141,8 @@ function Board(props) {
 
     if (type !== 'home') {
       setMouseBomb(1);
-
     };
-
- 
-
-    // resetMouse();
+    resetMouse(type);
   }
 
   //  // ROCKS 
@@ -223,6 +217,12 @@ function Board(props) {
       const number = mouseBomb + 1
       setMouseBomb(number);
       setFound(true);
+      document.querySelector(`#${paw.id}found`).classList.toggle("fadeout");
+      document.querySelector(`#${paw.id}found`).classList.toggle("fadein");
+      setTimeout(() => {
+        document.querySelector(`#${paw.id}found`).classList.toggle("fadeout");
+        document.querySelector(`#${paw.id}found`).classList.toggle("fadein");
+      }, 3000);
     }
     if (paw.result) {
       document.querySelector(`#${paw.id}`).classList.add("fadeout");
@@ -285,6 +285,7 @@ function Board(props) {
   }, [mouseMoving]);
 
   useEffect(() => {
+    console.log("rockslocation === 0")
     setupRocks();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [rockLocations === 0]);
@@ -297,14 +298,13 @@ function Board(props) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [rockLocations]);
 
-
   useEffect(() => {
-    console.log(mouseFollow);
-  }, [mouseFollow])
+    setupRocks()
+  }, [score.level])
 
   return (
     <main  >
-      <div id="board" className="board" onClick={handleMouseClick} onMouseMove={findCoords}>
+      <div id="board" className="board" onDoubleClick={handleMouseBomb} onClick={handleMouseClick} onMouseMove={findCoords}>
 
 
         <div id="message" className="message-div hidden">
@@ -333,7 +333,10 @@ function Board(props) {
         </div>
 
         {pawLocations.map((paw, index) => (
-          <Paws key={index} location={paw} />
+          <>
+            <Paws key={index} location={paw} />
+            <span id={paw.paw + "found"} className="fadeout paw-message" style={{ left: paw.left, top: paw.top }}> !!!MOUSE BOMB!!!</span>
+          </>
         ))}
 
         {miceLocations.map((mice, index) => (
@@ -344,7 +347,6 @@ function Board(props) {
 
       </div>
 
-      {/* <Message text={MessageText} /> */}
       <Score score={score} mouseBombCount={mouseBomb} mouseBomb={handleMouseBomb} />
     </main>
   )

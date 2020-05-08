@@ -20,7 +20,7 @@ function Score(props) {
       <div>
         <p> Tools</p>
         <p>
-          Mouse Bomb: <button className="btn" onClick={handleClick}>{mouseBombCount}  </button>
+          Mouse Bomb: {mouseBombCount} 
         </p>
       </div>
 

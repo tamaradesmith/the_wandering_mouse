@@ -38,7 +38,8 @@ img {
   display: flex;
   justify-content: space-around;
   align-items: center;
-  border: 1px solid var(--board-colour);
+  /* border: 1px solid var(--board-colour); */
+  background: var(--board-colour);
 }
 /* Images */
 
@@ -115,4 +116,9 @@ img {
   color: var(--secondary-colour);
   width: 400px;
   padding: 1em 0.5em;
+}
+.paw-message{
+  position: absolute;
+  font-weight: 700px;
+  /* font-size: 1em; */
 }

@@ -5,7 +5,9 @@ import pawIcon from '../../images/paw.png';
 function Paws(props){
 
   const {location } = props;
+  const id = location.paw + "found"
   return (
+
     <img  id={location.paw} src={pawIcon} alt={"paws"} className="paws" style={{left: location.left, top: location.top}} />
   );
 };
