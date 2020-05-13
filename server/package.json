@@ -1,0 +1,26 @@
+{
+  "name": "wandering_mouse",
+  "version": "1.0.0",
+  "description": "a mouse game",
+  "main": "index.js",
+  
+  "keywords": [
+    "game",
+    "mouse",
+    "cat"
+  ],
+  "author": "Tamara Smith",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.1",
+    "knex": "^0.21.1",
+    "morgan": "^1.10.0",
+    "pg": "^8.1.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon index.js"
+  }
+  
+}
