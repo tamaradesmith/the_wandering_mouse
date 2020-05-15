@@ -27,7 +27,7 @@ h4 {
   padding: 0.4em 0.25em;
   text-decoration: underline;
 }
-strong{
+strong {
   font-weight: 700;
 }
 .board {
@@ -102,17 +102,21 @@ strong{
 }
 .rules-p {
   padding-left: 0.75em;
-  margin: .25em;
-
+  margin: 0.25em;
 }
 .rules-link {
-  margin: 0 auto;
-  width: 1200px;
+  margin-right:  1em;
+  font-size: .9em;
   color: var(--secondary-colour);
   z-index: 1;
 }
-.rules-link:hover{
+.rules-link:hover {
   color: var(--board-colour);
+}
+.link-div{
+  display: flex;
+  width: 1200px;
+  margin: 0 auto;
 }
 /* Fades and Messages */
 .fadein {
@@ -138,9 +142,9 @@ strong{
   opacity: 1;
   z-index: 1;
 }
-.rules-hide{
+.rules-hide {
   display: none;
-    transition: opacity 1.5s linear;
+  transition: opacity 1.5s linear;
   transform: translate(70);
   opacity: 0;
 }
@@ -168,4 +172,56 @@ strong{
 .paw-message {
   position: absolute;
   font-weight: 700px;
+}
+
+/* HighScore */
+.high-score-div {
+  width: 500px;
+  padding: 0.5em;
+  background: var(--background-colour);
+  color: var(--secondary-colour);
+  position: absolute;
+  padding: 0.5em;
+  top: 25px;
+  left: 150px;
+}
+
+.chart {
+  display: grid;
+  grid-template-columns: 100px 250px 100px;
+  grid-gap: .2em;
+  text-align: center;
+  margin-bottom: .25em;
+}
+.high-score-header{
+  text-align: center;
+  font-size: 1.1em;
+}
+ .name::first-letter{
+   text-transform: capitalize;
+ }
+ .form{
+   font-size: .9em;
+   background: transparent;
+   border: 3px solid var(--secondary-colour);
+   color: var(--secondary-colour);
+   margin: .5em .5em;
+ }
+ .label{
+   margin-bottom: .5em;
+ }
+ .score-title{
+   font-size: 1.5em;
+   text-align: center;
+   margin-bottom: 1em;
+ }
+ .new-score-div {
+  width: 475px;
+  padding: 0.5em;
+  background: var(--background-colour);
+  color: var(--secondary-colour);
+  position: absolute;
+  padding: 0.5em;
+  top: 25px;
+  left: 150px;
 }

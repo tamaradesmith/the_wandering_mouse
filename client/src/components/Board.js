@@ -5,6 +5,7 @@ import { GrassQuery } from '../js/grassQuery';
 import { CatQuery } from '../js/catQuery';
 import { MouseQuery } from '../js/mouseQuery';
 import { PawQuery } from '../js/pawQuery';
+import { Scores } from '../js/request'
 
 import Score from './Score';
 import Mouse from './character/Mouse';
@@ -15,11 +16,15 @@ import Aurora from './character/Aurora';
 import Paws from './character/Paws';
 import Mice from './character/Mice';
 import Rules from './Rules';
+import HighScores from './HighScores';
+import ScoreForm from './ScoreForm';
 
 function Board(props) {
 
   const [score, setScore] = useState({ level: 1, grass: 0, rock: 0, home: 0, update: false });
-
+  const [lastLevel, setLastLevel] = useState(1);
+  const [scoresList, setScoresList] = useState([]);
+  const [holdMouse, setHoldMouse] = useState(false);
 
   const [boardLeft, setBoardLeft] = useState(null);
   const [boardTop, setBoardTop] = useState(null);
@@ -79,17 +84,24 @@ function Board(props) {
   };
 
   function handleMouseClick() {
-    setMouseFollow(mouseFollow === true ? false : true);
+    if (!holdMouse) {
+      setMouseFollow(mouseFollow === true ? false : true);
+    }
   }
 
   function updateScore(type) {
     const newScore = { ...score };
+
     if (type === "home") {
       newScore.level = score.level + 1;
       newScore[type] = score[type] + 1;
     } else {
+      checkForNewHighScore(newScore.level)
       newScore[type] = score[type] + 1;
       newScore.level = 1;
+      if (score.level === 1) {
+        setupRocks();
+      }
     }
     setScore(newScore);
   }
@@ -115,7 +127,6 @@ function Board(props) {
         document.querySelector("#mouse").classList.add("fadein");
         document.querySelector("#mouse").classList.remove("fadeout");
         document.querySelector("#aurora").classList.add("fadeout");
-        // setupRocks()
         setMiceLocations([]);
         setMiceFreeze(true);
       }
@@ -233,7 +244,6 @@ function Board(props) {
     };
   };
 
-
   function auroraMice() {
     const result = CatQuery.overMice(cat, miceLocations, catFreeze);
     miceLocations.forEach(mice => {
@@ -261,18 +271,48 @@ function Board(props) {
       setMiceLocations(bomb);
       setMouseBomb(mouseBomb - 1);
       setMiceFreeze(false);
-    }
-  }
+    };
+  };
 
   function showRules() {
     document.querySelector('#rules').classList.toggle("fadeout");
     document.querySelector('#rules').classList.toggle("fadein");
+    setHoldMouse(holdMouse ? false : true);
+  };
+
+  async function showScore() {
+    await getHighScore();
+    document.querySelector('#highScores').classList.toggle("fadeout");
+    document.querySelector('#highScores').classList.toggle("fadein");
+    setHoldMouse(holdMouse ? false : true);
+  };
 
 
+  async function getHighScore() {
+    const highScores = await Scores.getScores()
+    setScoresList(highScores)
+  }
+
+  async function checkForNewHighScore(level) {
+    setLastLevel(level);
+    const result = await Scores.checkIfHighScore(level);
+    const name = (result) ? enterName() : null;
+    return name
+  };
+
+  async function submitName(name) {
+    const score = { level: lastLevel, name }
+    await Scores.create(score);
+  }
+
+  function enterName() {
+    document.querySelector('#newHightScore').classList.toggle("fadeout");
+    document.querySelector('#newHightScore').classList.toggle("fadein");
   };
 
   useEffect(() => {
     setBoardCoors();
+    getHighScore();
   }, [boardLeft]);
 
   useEffect(() => {
@@ -310,13 +350,13 @@ function Board(props) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [score.level])
 
+
   return (
     <main>
 
 
       <div id="board" className="board" onDoubleClick={handleMouseBomb} onClick={handleMouseClick} onMouseMove={findCoords}>
 
-      <Rules closeRules={showRules} />
 
         <div id="message" className="message-div hidden">
           <p id="messageText"> </p>
@@ -354,12 +394,23 @@ function Board(props) {
           <Mice key={index} location={mice} />
         ))}
 
+        <Rules closeRules={showRules} />
+        <HighScores closeScores={showScore} scores={scoresList} />
 
+
+        <ScoreForm newHighScore={submitName} />
 
       </div>
 
       <Score score={score} mouseBombCount={mouseBomb} mouseBomb={handleMouseBomb} />
-      <p className="rules-link" onClick={showRules}> Rules </p>
+
+      <div className="link-div">
+
+        <p className="rules-link" onClick={showRules}> Rules </p>
+        <p className="rules-link" onClick={showScore}> High Scores </p>
+
+      </div>
+
     </main>
   )
 }
