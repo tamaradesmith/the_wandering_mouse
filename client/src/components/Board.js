@@ -150,6 +150,9 @@ function Board(props) {
     document.querySelectorAll(".grass").forEach(blade => {
       blade.classList.add("fadeout");
     });
+    document.querySelectorAll(".paws").forEach(paw => {
+      paw.classList.add("fadeout");
+    });
 
     if (type !== 'home') {
       setMouseBomb(1);
@@ -274,6 +277,8 @@ function Board(props) {
     };
   };
 
+  //  SCORES AND RULES
+
   function showRules() {
     document.querySelector('#rules').classList.toggle("fadeout");
     document.querySelector('#rules').classList.toggle("fadein");
@@ -296,18 +301,23 @@ function Board(props) {
   async function checkForNewHighScore(level) {
     setLastLevel(level);
     const result = await Scores.checkIfHighScore(level);
-    const name = (result) ? enterName() : null;
+    const name = (result === "true") ? enterName() : '';
     return name
   };
 
   async function submitName(name) {
     const score = { level: lastLevel, name }
     await Scores.create(score);
+    setTimeout(() => {
+      document.querySelector('#name').value = "";
+    }, 3000);
   }
 
   function enterName() {
-    document.querySelector('#newHightScore').classList.toggle("fadeout");
-    document.querySelector('#newHightScore').classList.toggle("fadein");
+    setTimeout(() => {
+      document.querySelector('#newHightScore').classList.toggle("fadeout");
+      document.querySelector('#newHightScore').classList.toggle("fadein");
+    }, 1000);
   };
 
   useEffect(() => {

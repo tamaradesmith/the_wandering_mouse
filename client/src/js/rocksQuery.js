@@ -1,6 +1,6 @@
 const RocksQuery = {
   setup(level) {
-    const add =  (level < 3) ? 1 : level - 1;
+    const add = (level < 3) ? 1 : level - 1;
     const number = Math.ceil(Math.random() * 3) + add;
     const rocks = [];
     let index = 0;
@@ -36,7 +36,7 @@ const RocksQuery = {
     if (xPos > 975 && yPos > 550) {
       if (xPos > 1000) {
         xPos = 975;
-      } else { 
+      } else {
         yPos = 550;
       };
     };
@@ -68,8 +68,9 @@ const RocksQuery = {
     })
     return result;
   },
-  catInRock() {
-    return (Math.random() < .5) ? true : false;
+  catInRock(level) {
+    const number = 0.20 + (0.05 * level)
+    return (Math.random() < number) ? true : false;
   }
 }
 
