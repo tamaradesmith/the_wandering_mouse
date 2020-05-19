@@ -22,7 +22,7 @@
   "devDependencies": {},
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "index.js"
+    "start": "./client/index.js"
   },
   "engines": {
     "node": "11.15.0"
