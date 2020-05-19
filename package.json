@@ -22,7 +22,8 @@
   "devDependencies": {},
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "./client/index.js"
+    "start": "node index.js",
+    "start:dev": "nodemon index.js"
   },
   "engines": {
     "node": "11.15.0"
