@@ -1,31 +1,34 @@
 {
-  "name": "wandering_mouse",
-  "version": "1.0.0",
-  "description": "a mouse game",
-  "main": "index.js",
-  "keywords": [
-    "game",
-    "mouse",
-    "cat"
-  ],
-  "author": "Tamara Smith",
-  "license": "ISC",
+  "name": "the_wandering_mouse",
+  "version": "0.1.0",
+  "private": true,
   "dependencies": {
-    "cookie-parser": "^1.4.5",
-    "cors": "^2.8.5",
-    "express": "^4.17.1",
-    "knex": "^0.21.1",
-    "method-override": "^3.0.0",
-    "morgan": "^1.10.0",
-    "pg": "^8.1.0"
+    "@testing-library/jest-dom": "^4.2.4",
+    "@testing-library/react": "^9.3.2",
+    "@testing-library/user-event": "^7.1.2",
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1",
+    "react-scripts": "3.4.1"
   },
-  "devDependencies": {},
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "cd client && npm install && npm run build"
-  
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
   },
-  "engines": {
-    "node": "11.15.0"
+  "eslintConfig": {
+    "extends": "react-app"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
   }
 }
