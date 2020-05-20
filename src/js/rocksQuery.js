@@ -69,7 +69,7 @@ const RocksQuery = {
     return result;
   },
   catInRock(level) {
-    const number = 0.20 + (0.05 * level)
+    const number = 0.15 + (0.05 * level)
     return (Math.random() < number) ? true : false;
   }
 }

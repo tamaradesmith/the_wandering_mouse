@@ -10,11 +10,11 @@
 
 body {
   background: var(--background-colour);
-  font-size: 1.9em;
+  font-size: 1.8em;
 }
 h1 {
   color: var(--secondary-colour);
-  font-size: 1.75em;
+  font-size: 1.50em;
   font-weight: 700;
   padding: 0.2em;
   text-align: center;
@@ -33,7 +33,7 @@ strong {
 .board {
   position: relative;
   width: 1200px;
-  height: 800px;
+  height: 790px;
   background: var(--board-colour);
   margin: 0 auto;
   padding: 0.25em;
@@ -45,7 +45,6 @@ strong {
   display: flex;
   justify-content: space-around;
   align-items: center;
-  /* border: 1px solid var(--board-colour); */
   background: var(--board-colour);
 }
 /* Images */

@@ -1,4 +1,4 @@
-const BASE_URL = "https://wandering-mouse-server.herokuapp.com"  //'http://localhost:4040';
+const BASE_URL = "https://wandering-mouse-server.herokuapp.com:4040"  //'http://localhost';
 
 const Scores = {
   async create(score) {
@@ -12,11 +12,17 @@ const Scores = {
     return result.json();
   },
   async getScores() {
-    const result = await fetch(`${BASE_URL}/scores`);
+    const result = await fetch(`${BASE_URL}/scores`, {
+      method: "GET",
+      mode: 'cors',
+    });
     return result.json();
   },
-  async checkIfHighScore(score){
-    const result = await fetch(`${BASE_URL}/scores/${score}`);
+  async checkIfHighScore(score) {
+    const result = await fetch(`${BASE_URL}/scores/${score}`, {
+      method: "GET",
+      mode: 'cors',
+    });
     return result.text();
   }
 };

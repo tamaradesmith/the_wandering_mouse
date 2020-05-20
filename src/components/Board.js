@@ -171,7 +171,7 @@ function Board(props) {
 
   function mouseRock() {
     const result = RocksQuery.overRock(mouse, rockLocations);
-    const cat = (result) ? RocksQuery.catInRock() : false;
+    const cat = (result) ? RocksQuery.catInRock(score.level) : false;
     if (cat === true) {
       mouseCaught(`Mouse caught by Hudson the Rock Hidding Kitten`, "rock");
     }
@@ -255,8 +255,6 @@ function Board(props) {
         miceId.classList.add("fadeout");
       };
     });
-
-
     if (result.status) {
       setCatFreeze(true);
       document.querySelector('#aurora').classList.add("hidden");
