@@ -5,7 +5,7 @@ import { GrassQuery } from '../js/grassQuery';
 import { CatQuery } from '../js/catQuery';
 import { MouseQuery } from '../js/mouseQuery';
 import { PawQuery } from '../js/pawQuery';
-import { Scores } from '../js/request'
+// import { Scores } from '../js/request'
 
 import Score from './Score';
 import Mouse from './character/Mouse';
@@ -96,7 +96,7 @@ function Board(props) {
       newScore.level = score.level + 1;
       newScore[type] = score[type] + 1;
     } else {
-      checkForNewHighScore(newScore.level)
+      // checkForNewHighScore(newScore.level)
       newScore[type] = score[type] + 1;
       newScore.level = 1;
       if (score.level === 1) {
@@ -285,44 +285,44 @@ function Board(props) {
     setHoldMouse(holdMouse ? false : true);
   };
 
-  async function showScore() {
-    await getHighScore();
-    document.querySelector('#highScores').classList.toggle("fadeout");
-    document.querySelector('#highScores').classList.toggle("fadein");
-    setHoldMouse(holdMouse ? false : true);
-  };
+  // async function showScore() {
+  //   await getHighScore();
+  //   document.querySelector('#highScores').classList.toggle("fadeout");
+  //   document.querySelector('#highScores').classList.toggle("fadein");
+  //   setHoldMouse(holdMouse ? false : true);
+  // };
 
 
-  async function getHighScore() {
-    const highScores = await Scores.getScores()
-    setScoresList(highScores)
-  }
+  // async function getHighScore() {
+  //   const highScores = await Scores.getScores()
+  //   setScoresList(highScores)
+  // }
 
-  async function checkForNewHighScore(level) {
-    setLastLevel(level);
-    const result = await Scores.checkIfHighScore(level);
-    const name = (result === "true") ? enterName() : '';
-    return name
-  };
+  // async function checkForNewHighScore(level) {
+  //   setLastLevel(level);
+  //   const result = await Scores.checkIfHighScore(level);
+  //   const name = (result === "true") ? enterName() : '';
+  //   return name
+  // };
 
-  async function submitName(name) {
-    const score = { level: lastLevel, name }
-    await Scores.create(score);
-    setTimeout(() => {
-      document.querySelector('#name').value = "";
-    }, 3000);
-  }
+  // async function submitName(name) {
+  //   const score = { level: lastLevel, name }
+  //   await Scores.create(score);
+  //   setTimeout(() => {
+  //     document.querySelector('#name').value = "";
+  //   }, 3000);
+  // }
 
-  function enterName() {
-    setTimeout(() => {
-      document.querySelector('#newHightScore').classList.toggle("fadeout");
-      document.querySelector('#newHightScore').classList.toggle("fadein");
-    }, 1000);
-  };
+  // function enterName() {
+  //   setTimeout(() => {
+  //     document.querySelector('#newHightScore').classList.toggle("fadeout");
+  //     document.querySelector('#newHightScore').classList.toggle("fadein");
+  //   }, 1000);
+  // };
 
   useEffect(() => {
     setBoardCoors();
-    getHighScore();
+    // getHighScore();
   }, [boardLeft]);
 
   useEffect(() => {
@@ -405,10 +405,10 @@ function Board(props) {
         ))}
 
         <Rules closeRules={showRules} />
-        <HighScores closeScores={showScore} scores={scoresList} />
+        {/* <HighScores closeScores={showScore} scores={scoresList} /> */}
 
 
-        <ScoreForm newHighScore={submitName} />
+        {/* <ScoreForm newHighScore={submitName} /> */}
 
       </div>
 
@@ -417,7 +417,7 @@ function Board(props) {
       <div className="link-div">
 
         <p className="rules-link" onClick={showRules}> Rules </p>
-        <p className="rules-link" onClick={showScore}> High Scores </p>
+        {/* <p className="rules-link" onClick={showScore}> High Scores </p> */}
 
       </div>
 
