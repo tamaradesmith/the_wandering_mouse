@@ -15,7 +15,6 @@ function Score(props) {
       <p> Husdon: {score.rock} </p>
       <p> Home: {score.home} </p>
       <div>
-        <p> Tools</p>
         <p>
           Mouse Bomb: {mouseBombCount} 
         </p>
