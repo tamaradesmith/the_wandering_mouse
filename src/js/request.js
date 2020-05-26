@@ -1,4 +1,4 @@
-const BASE_URL = "https://wandering-mouse-server.herokuapp.com:4040"  //'http://localhost';
+const BASE_URL = "https://wandering-mouse-server.herokuapp.com"  //'http://localhost';
 
 const Scores = {
   async create(score) {
