@@ -17,13 +17,13 @@ function Rules(props) {
         <h4>Movement:</h4>
         <ul className="rules-list" >
           <li>
-            Left Click, to turn on and off the wandering mouse movement.
+            Left Click, to turn on and off the Wandering Mouse movement.
           </li>
           <li>
             Then the Wandering Mouse will follow your computer mouse.
           </li>
           <li>
-            If your computer mouse gets to far from the Wandering mouse, he will stopped following.
+            If your computer mouse gets too far from the Wandering Mouse, he will stop following.
           </li>
           <li>
             If you leave the play area the Wandering Mouse will stop.
@@ -35,14 +35,14 @@ function Rules(props) {
 
         <ul className="rules-list">
           <li>
-            Hudson the Rock Kitten sometime hides in rock looking for mouse to come too close.
+            Hudson the Rock Kitten sometime hides in rock looking for a mouse to come too close.
           </li>
         </ul>
 
         <p className="rules-p"><strong> Grass: </strong></p>
         <ul className="rules-list">
           <li>
-            Aurora likes to lay in the grass until she spots a mouse  by the grass, then she comes running.
+            Aurora likes to lay in the grass until she spots a mouse by the grass, then she comes running.
           </li>
           <li>
             Then it is a race to get to the mouse hole before Aurora reaches the Wandering Mouse.
@@ -64,7 +64,7 @@ function Rules(props) {
             Double click to use a mouse bomb, a group of shadow mice will be release to move randmonly around the board.
           </li>
           <li>
-            If Aurora runs into a  shadow mice, she will take it back into hidding with her and leave the Wandering mouse alone.
+            If Aurora runs into a  shadow mice, she will take it back into hiding with her and leave the Wandering Mouse alone.
           </li>
           <li>
             If a shadow hit the edges of the board, it will fade away.
@@ -73,7 +73,7 @@ function Rules(props) {
       </div>
 
 
-      <button className="btn" onClick={handleClose}> close </button>
+      <button className="btn" onClick={handleClose}> Close </button>
     </div>
   );
 };
